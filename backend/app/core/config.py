@@ -32,7 +32,14 @@ class Settings(BaseSettings):
     FRONTEND_URL: str = "http://localhost:8501"
 
     # CORS
-    ALLOWED_ORIGINS: list[str] = ["http://localhost:8501", "http://localhost:3000", "http://localhost:5173"]
+    ALLOWED_ORIGINS: list[str] = [
+        "http://localhost:8501", 
+        "http://localhost:3000", 
+        "http://localhost:5173",
+        "http://localhost",
+        "http://frontend-react",
+        "http://frontend-react:80"
+    ]
 
     class Config:
         env_file = str(ENV_FILE)
