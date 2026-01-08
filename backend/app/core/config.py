@@ -32,7 +32,7 @@ class Settings(BaseSettings):
     FRONTEND_URL: str = "http://localhost:8501"
 
     # CORS
-    ALLOWED_ORIGINS: list[str] = ["http://localhost:8501", "http://localhost:3000"]
+    ALLOWED_ORIGINS: list[str] = ["http://localhost:8501", "http://localhost:3000", "http://localhost:5173"]
 
     class Config:
         env_file = str(ENV_FILE)
