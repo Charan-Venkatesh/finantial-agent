@@ -85,9 +85,11 @@ echo ""
 
 # Validate critical environment variables
 echo "🔍 Validating configuration..."
-source .env
 
-if [ -z "$SECRET_KEY" ] || [ "$SECRET_KEY" = "your-secret-key-here-change-in-production" ] || [ "${#SECRET_KEY}" -lt 32 ]; then
+# Use safer approach to check .env values
+SECRET_KEY_VALUE=$(grep "^SECRET_KEY=" .env | cut -d'=' -f2-)
+
+if [ -z "$SECRET_KEY_VALUE" ] || [ "$SECRET_KEY_VALUE" = "CHANGE-THIS-TO-A-RANDOM-32-CHAR-STRING-USE-openssl-rand-hex-32" ] || [ "${#SECRET_KEY_VALUE}" -lt 32 ]; then
     echo "❌ SECRET_KEY is not properly configured in .env"
     echo "   Generate one with: openssl rand -hex 32"
     exit 1

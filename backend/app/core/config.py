@@ -36,7 +36,6 @@ class Settings(BaseSettings):
         "http://localhost:8501", 
         "http://localhost:3000", 
         "http://localhost:5173",
-        "http://localhost",
         "http://frontend-react",
         "http://frontend-react:80"
     ]
