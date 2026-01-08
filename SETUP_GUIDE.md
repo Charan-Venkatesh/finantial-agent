@@ -69,9 +69,8 @@ docker-compose up -d
 ```
 
 This will start:
-- MySQL database (port 3306)
 - Backend API (port 8000)
-- Frontend UI (port 8501)
+- React frontend (port 3000)
 
 ### Step 4: Verify Services
 
@@ -81,17 +80,17 @@ Check that all services are running:
 docker-compose ps
 ```
 
-You should see three services: `mysql`, `backend`, and `frontend`.
+You should see two services: `backend` and `frontend-react`.
 
 ### Step 5: Access the Application
 
-- **Frontend**: Open http://localhost:8501 in your browser
+- **Frontend**: Open http://localhost:3000 in your browser
 - **Backend API**: http://localhost:8000
 - **API Documentation**: http://localhost:8000/docs
 
 ### Step 6: Create Your First Account
 
-1. Go to http://localhost:8501
+1. Go to http://localhost:3000
 2. Click on "Sign Up" tab
 3. Fill in your details
 4. Click "Sign Up"
@@ -201,26 +200,26 @@ Backend should now be running at http://localhost:8000
 Open a **new terminal window**:
 
 ```bash
-cd frontend
+cd react-frontend
 ```
 
 #### Install Dependencies:
 ```bash
-pip install -r requirements.txt
+npm install
 ```
 
 #### Run Frontend:
 ```bash
-streamlit run app.py
+npm run dev
 ```
 
-Frontend should open automatically at http://localhost:8501
+Frontend should be available at http://localhost:5173
 
 ### Step 5: Verify Setup
 
 1. **Check Backend Health**: Visit http://localhost:8000/health
 2. **Check API Docs**: Visit http://localhost:8000/docs
-3. **Check Frontend**: Visit http://localhost:8501
+3. **Check Frontend**: Visit http://localhost:5173
 
 ---
 

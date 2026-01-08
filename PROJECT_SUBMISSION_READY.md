@@ -37,12 +37,12 @@ docker-compose up -d
 ```
 
 ### Access Your Application:
-- **Frontend UI:** http://localhost:8501
+- **Frontend UI:** http://localhost:3000
 - **Backend API:** http://localhost:8000
 - **API Documentation:** http://localhost:8000/docs
 
 ### Test the Application:
-1. Open http://localhost:8501 in your browser
+1. Open http://localhost:3000 in your browser
 2. Sign up with any email/username/password
 3. Go to "AI Insights" tab
 4. Enter stock ticker: `AAPL` (or GOOGL, MSFT, TSLA)
@@ -87,7 +87,7 @@ docker-compose up -d
 
 **All Components Operational:**
 - ✅ Backend API (FastAPI)
-- ✅ Frontend UI (Streamlit)
+- ✅ Frontend UI (React + Vite)
 - ✅ Database (SQLite)
 - ✅ Stock Data (Finnhub - Real-time)
 - ✅ AI Analysis (Google Gemini 2.0 Flash)
@@ -106,9 +106,9 @@ financial_ai_agent/
 │   │   ├── routes/           # API endpoints
 │   │   └── core/             # Config & security
 │   └── requirements.txt
-├── frontend/
-│   ├── app.py               # Main Streamlit app
-│   └── pages/               # Dashboard, Insights, etc.
+├── react-frontend/
+│   ├── src/                 # React app source
+│   └── package.json         # Dependencies
 ├── docker-compose.yml       # Simplified (2 services)
 ├── .env                     # Configuration
 ├── README.md               # Full documentation
@@ -135,7 +135,7 @@ financial_ai_agent/
 
 3. **Technical:**
    - FastAPI backend (async)
-   - Streamlit frontend
+   - React + Vite frontend
    - Google Gemini 2.0 AI
    - Finnhub real-time data
    - Docker containerized

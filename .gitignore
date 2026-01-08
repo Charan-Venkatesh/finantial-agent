@@ -47,9 +47,6 @@ logs/
 *.db
 *.sqlite3
 
-# Streamlit
-.streamlit/
-
 # Testing
 .pytest_cache/
 .coverage

@@ -23,9 +23,7 @@ A production-grade, real-time financial intelligence system powered by multi-age
 - **Multi-Agent AI System**: Specialized agents for market analysis, sentiment evaluation, risk assessment, and decision synthesis
 - **Secure Authentication**: JWT-based user authentication with password hashing
 - **User Management**: Personal watchlists, query history, and profile management
-- **Dual Frontend Options**: 
-  - **React.js** (Recommended) - Modern, professional UI with excellent UX
-  - **Streamlit** - Python-based rapid prototyping interface
+- **Frontend**: Modern React.js UI built with Vite and Tailwind CSS
 - **Production-Ready**: Async architecture, Docker support, comprehensive error handling
 
 ## 🏗️ Architecture Overview
@@ -35,7 +33,7 @@ A production-grade, real-time financial intelligence system powered by multi-age
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                     Frontend Layer                          │
-│         React.js (Modern) / Streamlit (Legacy)             │
+│                     React.js (Modern)                       │
 │  - Login/Signup    - Live Dashboard    - AI Insights       │
 │  - News Feed       - Watchlist         - Query History     │
 └─────────────────────────────────────────────────────────────┘
@@ -146,17 +144,7 @@ financial_ai_agent/
 │   ├── requirements.txt             # Python dependencies
 │   └── Dockerfile                   # Backend container
 │
-├── frontend/                      # Streamlit frontend (legacy)
-│   ├── app.py                       # Streamlit main app
-│   ├── pages/
-│   │   ├── dashboard.py             # Live market dashboard
-│   │   ├── insights.py              # AI insights interface
-│   │   ├── watchlist.py             # Watchlist management
-│   │   └── history.py               # Query history
-│   │
-│   └── requirements.txt             # Frontend dependencies
-│
-├── react-frontend/                # React.js frontend (recommended)
+├── react-frontend/                # React.js frontend
 │   ├── src/
 │   │   ├── components/              # Reusable components
 │   │   ├── pages/                   # Page components
@@ -204,8 +192,7 @@ financial_ai_agent/
    ```
 
 3. **Access**
-   - **React Frontend**: http://localhost:3000 (Recommended)
-   - **Streamlit Frontend**: http://localhost:8501 (Legacy)
+   - **React Frontend**: http://localhost:3000
    - Backend API: http://localhost:8000
    - API Docs: http://localhost:8000/docs
 
@@ -239,15 +226,6 @@ financial_ai_agent/
    ```
    
    Access at http://localhost:5173
-
-3. **Streamlit Frontend (Optional/Legacy)**
-   ```bash
-   cd frontend
-   pip install -r requirements.txt
-   streamlit run app.py
-   ```
-   
-   Access at http://localhost:8501
 
 ## 🔐 Security Features
 
@@ -411,9 +389,10 @@ Configure in `.env` via `MARKET_DATA_PROVIDER`.
 cd backend
 pytest
 
-# Frontend tests
-cd frontend
-pytest
+# Frontend checks
+cd react-frontend
+npm run lint
+npm run build
 ```
 
 ### Code Quality
@@ -483,7 +462,7 @@ This project is licensed under the MIT License - see LICENSE file for details.
 - **Phidata**: Agent orchestration framework
 - **Google Gemini**: AI reasoning and analysis
 - **FastAPI**: High-performance backend framework
-- **Streamlit**: Interactive frontend framework
+- **React + Vite + Tailwind**: Modern frontend stack
 - **SQLAlchemy**: Database ORM
 
 ## 📧 Support

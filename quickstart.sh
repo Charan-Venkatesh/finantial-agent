@@ -88,7 +88,7 @@ if docker-compose ps | grep -q "Up"; then
     echo "✅ Services are running!"
     echo ""
     echo "🌐 Access the application:"
-    echo "   Frontend:  http://localhost:8501"
+    echo "   Frontend:  http://localhost:3000"
     echo "   Backend:   http://localhost:8000"
     echo "   API Docs:  http://localhost:8000/docs"
     echo ""
@@ -98,7 +98,7 @@ if docker-compose ps | grep -q "Up"; then
     echo "🛑 Stop services:"
     echo "   docker-compose down"
     echo ""
-    echo "🎉 Setup complete! Visit http://localhost:8501 to get started."
+    echo "🎉 Setup complete! Visit http://localhost:3000 to get started."
     echo ""
 else
     echo ""
