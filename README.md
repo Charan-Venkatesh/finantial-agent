@@ -2,13 +2,30 @@
 
 A production-grade, real-time financial intelligence system powered by multi-agent AI orchestration. This platform integrates live market data, financial news analysis, and agentic reasoning to provide comprehensive investment decision support.
 
+## ✨ NEW: Modern React.js Frontend
+
+**Now featuring a complete, professional React.js frontend with state-of-the-art UI/UX!**
+
+- 🎨 Modern, responsive design with Tailwind CSS
+- ⚡ Fast performance with Vite build system
+- 🔐 Secure JWT authentication
+- 📊 Real-time stock monitoring with auto-refresh
+- 🤖 AI-powered insights with multi-agent analysis
+- 📰 Financial news aggregation
+- ⭐ Personal watchlist management
+- 📜 Query history tracking
+
+**See [REACT_FRONTEND_GUIDE.md](./REACT_FRONTEND_GUIDE.md) for complete setup and usage instructions.**
+
 ## 🎯 Core Features
 
 - **Real-time Market Data**: WebSocket-based live stock price streaming with pluggable data providers
 - **Multi-Agent AI System**: Specialized agents for market analysis, sentiment evaluation, risk assessment, and decision synthesis
 - **Secure Authentication**: JWT-based user authentication with password hashing
 - **User Management**: Personal watchlists, query history, and profile management
-- **Interactive Dashboard**: Streamlit-based frontend with real-time updates
+- **Dual Frontend Options**: 
+  - **React.js** (Recommended) - Modern, professional UI with excellent UX
+  - **Streamlit** - Python-based rapid prototyping interface
 - **Production-Ready**: Async architecture, Docker support, comprehensive error handling
 
 ## 🏗️ Architecture Overview
@@ -18,9 +35,9 @@ A production-grade, real-time financial intelligence system powered by multi-age
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                     Frontend Layer                          │
-│              (Streamlit Interactive UI)                     │
+│         React.js (Modern) / Streamlit (Legacy)             │
 │  - Login/Signup    - Live Dashboard    - AI Insights       │
-│  - Watchlist       - Query History                          │
+│  - News Feed       - Watchlist         - Query History     │
 └─────────────────────────────────────────────────────────────┘
                             ↕ HTTP/REST
 ┌─────────────────────────────────────────────────────────────┐
@@ -129,7 +146,7 @@ financial_ai_agent/
 │   ├── requirements.txt             # Python dependencies
 │   └── Dockerfile                   # Backend container
 │
-├── frontend/
+├── frontend/                      # Streamlit frontend (legacy)
 │   ├── app.py                       # Streamlit main app
 │   ├── pages/
 │   │   ├── dashboard.py             # Live market dashboard
@@ -139,10 +156,23 @@ financial_ai_agent/
 │   │
 │   └── requirements.txt             # Frontend dependencies
 │
+├── react-frontend/                # React.js frontend (recommended)
+│   ├── src/
+│   │   ├── components/              # Reusable components
+│   │   ├── pages/                   # Page components
+│   │   ├── services/                # API service layer
+│   │   ├── context/                 # React Context
+│   │   └── App.jsx                  # Main app
+│   │
+│   ├── Dockerfile                   # React Docker config
+│   ├── package.json                 # Dependencies
+│   └── vite.config.js               # Vite configuration
+│
 ├── docker-compose.yml               # Docker orchestration
 ├── DATABASE_SCHEMA.sql              # MySQL schema
 ├── .env.example                     # Environment template
 ├── .gitignore                       # Git ignore rules
+├── REACT_FRONTEND_GUIDE.md          # React setup guide
 └── README.md                        # This file
 ```
 
@@ -151,7 +181,7 @@ financial_ai_agent/
 ### Prerequisites
 
 - Python 3.11+
-- MySQL 8.0+
+- Node.js 20+ and npm (for React frontend)
 - Docker & Docker Compose (optional)
 - API Keys:
   - Google Gemini API
@@ -174,18 +204,14 @@ financial_ai_agent/
    ```
 
 3. **Access**
-   - Frontend: http://localhost:8501
+   - **React Frontend**: http://localhost:3000 (Recommended)
+   - **Streamlit Frontend**: http://localhost:8501 (Legacy)
    - Backend API: http://localhost:8000
    - API Docs: http://localhost:8000/docs
 
-### Method 2: Manual Setup
+### Method 2: Manual Setup (React Frontend)
 
-1. **Database Setup**
-   ```bash
-   mysql -u root -p < DATABASE_SCHEMA.sql
-   ```
-
-2. **Backend Setup**
+1. **Backend Setup**
    ```bash
    cd backend
    python -m venv venv
@@ -200,12 +226,28 @@ financial_ai_agent/
    uvicorn app.main:app --reload
    ```
 
-3. **Frontend Setup**
+2. **React Frontend Setup**
+   ```bash
+   cd react-frontend
+   npm install
+   
+   # Configure environment
+   cp .env.example .env
+   
+   # Start development server
+   npm run dev
+   ```
+   
+   Access at http://localhost:5173
+
+3. **Streamlit Frontend (Optional/Legacy)**
    ```bash
    cd frontend
    pip install -r requirements.txt
    streamlit run app.py
    ```
+   
+   Access at http://localhost:8501
 
 ## 🔐 Security Features
 
