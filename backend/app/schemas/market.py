@@ -9,6 +9,11 @@ class TickerSubscription(BaseModel):
     tickers: List[str] = Field(..., min_items=1, max_items=20)
 
 
+class BatchQuoteRequest(BaseModel):
+    """Schema for requesting multiple stock quotes."""
+    tickers: List[str] = Field(..., min_items=1, max_items=20)
+
+
 class StockPrice(BaseModel):
     """Real-time stock price data."""
     ticker: str
