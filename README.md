@@ -182,12 +182,23 @@ financial_ai_agent/
    ```bash
    git clone <repository-url>
    cd financial_ai_agent
-   cp .env.example .env
-   # Edit .env with your API keys
    ```
 
-2. **Start Services**
+2. **Quick Start**
    ```bash
+   ./docker-start.sh
+   ```
+   
+   This automated script will:
+   - Check prerequisites (Docker, Docker Compose)
+   - Create and validate .env file
+   - Build and start all services
+   - Verify everything is running correctly
+   
+   **Or manually:**
+   ```bash
+   cp .env.example .env
+   # Edit .env with your API keys (minimum: SECRET_KEY)
    docker-compose up -d
    ```
 
@@ -195,6 +206,10 @@ financial_ai_agent/
    - **React Frontend**: http://localhost:3000
    - Backend API: http://localhost:8000
    - API Docs: http://localhost:8000/docs
+
+4. **Troubleshooting**
+   
+   If you encounter issues, see [DOCKER_TROUBLESHOOTING.md](./DOCKER_TROUBLESHOOTING.md) for detailed solutions to common problems.
 
 ### Method 2: Manual Setup (React Frontend)
 
