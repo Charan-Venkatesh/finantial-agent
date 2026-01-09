@@ -13,8 +13,10 @@ from ..schemas.market import (
     WatchlistCreate,
     WatchlistResponse,
     TickerSubscription,
-    StockPrice
+    StockPrice,
+    BatchQuoteRequest
 )
+import asyncio
 from ..services.stock_stream import stock_stream_manager
 
 logger = logging.getLogger(__name__)
@@ -46,6 +48,31 @@ async def get_stock_quote(
         )
 
     return quote
+
+
+@router.post("/quotes", response_model=List[StockPrice])
+async def get_batch_quotes(
+    request: BatchQuoteRequest,
+    current_user: User = Depends(get_current_active_user)
+):
+    """
+    Get current quotes for multiple tickers.
+
+    Args:
+        request: List of tickers
+        current_user: Authenticated user
+
+    Returns:
+        List of stock price data
+    """
+    # Fetch quotes concurrently
+    tasks = [stock_stream_manager.get_quote(ticker.upper()) for ticker in request.tickers]
+    quotes = await asyncio.gather(*tasks)
+
+    # Filter out None values (failed fetches)
+    valid_quotes = [quote for quote in quotes if quote is not None]
+
+    return valid_quotes
 
 
 @router.post("/watchlist", response_model=WatchlistResponse, status_code=status.HTTP_201_CREATED)

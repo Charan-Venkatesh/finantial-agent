@@ -6,6 +6,7 @@ import logging
 from .core.config import settings
 from .core.database import init_db
 from .routes import auth_router, market_router, insights_router, news_router
+from .services.stock_stream import stock_stream_manager
 
 logging.basicConfig(
     level=logging.INFO,
@@ -26,6 +27,7 @@ async def lifespan(app: FastAPI):
     yield
 
     logger.info("Shutting down Financial AI Agent Platform...")
+    await stock_stream_manager.shutdown()
 
 
 app = FastAPI(

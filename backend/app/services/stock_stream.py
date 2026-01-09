@@ -3,6 +3,8 @@ import asyncio
 import json
 from datetime import datetime
 import logging
+import aiohttp
+import ssl
 
 from ..core.config import settings
 from ..schemas.market import StockPrice
@@ -19,6 +21,26 @@ class FinnhubProvider:
         self.connected = False
         self._subscribed_tickers: Set[str] = set()
         self.base_url = "https://finnhub.io/api/v1"
+        self.session: Optional[aiohttp.ClientSession] = None
+
+    async def _get_session(self) -> aiohttp.ClientSession:
+        """Lazily create and return the client session."""
+        if self.session is None or self.session.closed:
+            # Create SSL context that doesn't verify certificates (for development)
+            ssl_context = ssl.create_default_context()
+            ssl_context.check_hostname = False
+            ssl_context.verify_mode = ssl.CERT_NONE
+
+            connector = aiohttp.TCPConnector(ssl=ssl_context)
+            self.session = aiohttp.ClientSession(connector=connector)
+        return self.session
+
+    async def close_session(self):
+        """Close the client session."""
+        if self.session and not self.session.closed:
+            await self.session.close()
+            self.session = None
+            logger.info("Closed Finnhub REST session")
 
     async def connect(self):
         """Connect to Finnhub WebSocket."""
@@ -65,43 +87,34 @@ class FinnhubProvider:
     async def get_latest_quote(self, ticker: str) -> Optional[StockPrice]:
         """Get the latest quote for a ticker using REST API."""
         try:
-            import aiohttp
-            import ssl
-
             url = f"{self.base_url}/quote"
             params = {"symbol": ticker, "token": self.api_key}
 
-            # Create SSL context that doesn't verify certificates (for development)
-            ssl_context = ssl.create_default_context()
-            ssl_context.check_hostname = False
-            ssl_context.verify_mode = ssl.CERT_NONE
+            session = await self._get_session()
+            async with session.get(url, params=params) as response:
+                if response.status == 200:
+                    data = await response.json()
 
-            connector = aiohttp.TCPConnector(ssl=ssl_context)
-            async with aiohttp.ClientSession(connector=connector) as session:
-                async with session.get(url, params=params) as response:
-                    if response.status == 200:
-                        data = await response.json()
-
-                        # Check if data is valid (not empty response)
-                        if not data.get("c"):
-                            logger.error(f"No data returned for ticker: {ticker}")
-                            return None
-
-                        return StockPrice(
-                            ticker=ticker,
-                            price=float(data.get("c") or 0),  # Current price
-                            volume=int(data.get("v") or 0),  # Volume
-                            timestamp=datetime.utcnow(),
-                            change=float(data.get("d") or 0),  # Change
-                            change_percent=float(data.get("dp") or 0),  # Change percent
-                            open=float(data.get("o") or 0),  # Open
-                            high=float(data.get("h") or 0),  # High
-                            low=float(data.get("l") or 0),  # Low
-                            close=float(data.get("pc") or 0)  # Previous close
-                        )
-                    else:
-                        logger.error(f"Finnhub API error: {response.status}")
+                    # Check if data is valid (not empty response)
+                    if not data.get("c"):
+                        logger.error(f"No data returned for ticker: {ticker}")
                         return None
+
+                    return StockPrice(
+                        ticker=ticker,
+                        price=float(data.get("c") or 0),  # Current price
+                        volume=int(data.get("v") or 0),  # Volume
+                        timestamp=datetime.utcnow(),
+                        change=float(data.get("d") or 0),  # Change
+                        change_percent=float(data.get("dp") or 0),  # Change percent
+                        open=float(data.get("o") or 0),  # Open
+                        high=float(data.get("h") or 0),  # High
+                        low=float(data.get("l") or 0),  # Low
+                        close=float(data.get("pc") or 0)  # Previous close
+                    )
+                else:
+                    logger.error(f"Finnhub API error: {response.status}")
+                    return None
 
         except Exception as e:
             logger.error(f"Error fetching quote from Finnhub: {e}")
@@ -141,6 +154,13 @@ class StockStreamManager:
         """Initialize the Finnhub market data provider."""
         self.provider = FinnhubProvider(api_key=settings.MARKET_DATA_API_KEY)
         logger.info("Initialized Finnhub provider")
+
+    async def shutdown(self):
+        """Shutdown the provider and cleanup resources."""
+        if self.provider:
+            await self.provider.disconnect()
+            await self.provider.close_session()
+            logger.info("StockStreamManager shut down")
 
     async def subscribe_user(self, user_id: str, tickers: List[str]):
         """Subscribe a user to ticker updates."""
